@@ -1,26 +1,73 @@
+import java.util.Calendar;
+import java.util.Date;
+
 public class Task
 {
 	private int taskID;
 	private String taskDesc;
-	private int[] dueDate;
-	private int[] dueTime;
+	private Calendar dueDate;
 	private int complHrs;
 	private int prioPoints;
 
 
-	public Task(int startTaskID, String startTaskDesc, int[] startDueDate, int[] startDueTime, int startComplHrs)
+	public Task(int taskID, String taskDesc, Calendar dueDate, int complHrs)
 	{
-		taskID = startTaskID;
-		taskDesc = startTaskDesc;
-		dueDate = startDueDate;
-		dueTime = startDueTime;
-		complHrs = startComplHrs;
+		this.taskID = taskID;
+		this.taskDesc = taskDesc;
+		this.dueDate = dueDate;
+		this.complHrs = complHrs;
 		calcPrioPoints();
 	}
 
 	private void calcPrioPoints()
 	{
-		prioPoints = -1;
+		if(dueDate == null)
+		{
+			prioPoints = -1;
+			return;
+		}
+		Calendar currDate = Calendar.getInstance();
+
+		int diffYr = dueDate.get(Calendar.YEAR) - currDate.get(Calendar.YEAR);
+		int diffMnth = dueDate.get(Calendar.MONTH) - currDate.get(Calendar.MONTH);
+		int diffDay = dueDate.get(Calendar.DAY_OF_MONTH) - currDate.get(Calendar.DAY_OF_MONTH);
+		int diffHr = dueDate.get(Calendar.HOUR_OF_DAY) - currDate.get(Calendar.HOUR_OF_DAY);
+		int diffMin = dueDate.get(Calendar.MINUTE) - currDate.get(Calendar.MINUTE);
+
+		if(diffMin < 0)
+		{
+			diffMin += 60;
+			diffHr--;
+		}
+
+		if(diffHr < 0)
+		{
+			diffHr += 24;
+			diffDay--;
+		}
+
+		if(diffDay < 0)
+		{
+			diffDay += 31;
+			diffMnth--;
+		}
+
+		if(diffMnth < 0)
+		{
+			diffMnth += 12;
+			diffYr--;
+		}
+
+		if(diffYr < 0)
+		{
+			prioPoints = -1;
+		}
+
+		diffHr += diffDay * 24;
+		diffHr += diffMnth * 720;
+		diffHr += diffYr * 8640;
+
+		prioPoints = (complHrs / diffHr) * 100;
 	}
 
 	public int getTaskID()
@@ -38,26 +85,15 @@ public class Task
 		return taskDesc;
 	}
 
-	public void setDueDate(int[] newDueDate)
+	public void setDueDate(Calendar newDueDate)
 	{
 		dueDate = newDueDate;
 	}
 
-	public int[] getDueDate()
+	public Calendar getDueDate()
 	{
 		return dueDate;
 	}
-
-	public void setDueTime(int[] newDueTime)
-	{
-		dueTime = newDueTime;
-	}
-
-	public int[] getDueTime()
-	{
-		return dueTime;
-	}
-
 
 	public void setComplHrs(int newComplHrs)
 	{
@@ -69,17 +105,18 @@ public class Task
 		return complHrs;
 	}
 
+	public double getPrioPoints()
+	{
+		return prioPoints;
+	}
+
 	@Override
 	public String toString()
 	{
 		return 
 			"taskID: " + taskID + "\tTask Description: " + taskDesc 
 			+ 
-			"\t Due: " + dueDate[0] + "/" + dueDate[1] + "/" + dueDate[2] 
-			+ 
-			" at " + dueTime[0] + ":" + dueTime[1] 
-			+ 
-			"\tCompletion Hours: " + complHrs;
+			"\n\t Due: " + dueDate.getTime() + "\tCompletion Hours: " + complHrs;
 	}
 
 }

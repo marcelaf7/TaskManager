@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TaskList
 {
@@ -51,9 +52,9 @@ public class TaskList
 		return null;
 	}
 
-	private int[] parseDate(String date)
+	private int[] parseDate(String dateStr)
 	{
-		String[] strArr = date.split("/");
+		String[] strArr = dateStr.split("/");
 		int[] dateArr = new int[3];
 		if(strArr.length == 3)
 		{
@@ -86,12 +87,12 @@ public class TaskList
 		System.out.println("Enter task description");
 		String taskDesc = reader.next();
 
-		int[] date = null;
-		while(date == null)
+		int[] dateArr = null;
+		while(dateArr == null)
 		{
 			System.out.println("Enter due date (mm/dd/yyyy)");
 			String dueDate = reader.next();
-			date = parseDate(dueDate);
+			dateArr = parseDate(dueDate);
 		}
 
 		int[] time = null;
@@ -102,10 +103,13 @@ public class TaskList
 			time = parseTime(dueTime);
 		}
 
+		Calendar date = Calendar.getInstance();
+		date.set(dateArr[2], dateArr[0], dateArr[1], time[0], time[1]);
+
 		System.out.println("Enter estimated amount of hours to complete task");
 		int complHrs = reader.nextInt();
 
-		Task newTask = new Task(nextTaskID, taskDesc, date, time, complHrs);
+		Task newTask = new Task(nextTaskID, taskDesc, date, complHrs);
 		tasks.add(newTask);
 		nextTaskID++;
 	}
@@ -120,7 +124,24 @@ public class TaskList
 
 	private void getNowTask()
 	{
+		Task now = new Task(-1, null, null, 0);
 
+		for(int i = 0; i < tasks.size(); i++)
+		{
+			if(now.getPrioPoints() < tasks.get(i).getPrioPoints())
+			{
+				now = tasks.get(i);
+			}
+		}
+
+		if(now.getTaskID() == -1)
+		{
+			System.out.println("Error: Failed to get now task. Maybe not enough tasks entered.");
+			return;
+		}
+
+		System.out.println("Now task:");
+		System.out.println(now);
 	}
 
 	private void useCommand(String command)
