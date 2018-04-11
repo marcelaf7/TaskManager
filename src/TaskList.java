@@ -1,17 +1,25 @@
+/*
+ *This class handles prompting the user for input, taking user input, and handling all parts of the tasklist
+ */
+
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TaskList
 {
-	private ArrayList<Task> tasks;
-	private int nextTaskID = 0;
+	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
+	private int nextTaskID = 0; //holds the id value of the next Task that will be constructed
 
+	//Constructor
+	//Creates an empty TaskList
 	public TaskList()
 	{
 		tasks = new ArrayList<Task>();
 	}
 
+	//prints out the list of possible commands for the user
 	private void printCommandsList()
 	{
 		System.out.println("Commands:");
@@ -22,6 +30,7 @@ public class TaskList
 		System.out.println("\tq: exits the program");
 	}
 
+	//parses the time string into an int[] of size 2
 	private int[] parseTime(String time)
 	{
 		String[] strArr = time.split(":");
@@ -52,6 +61,7 @@ public class TaskList
 		return null;
 	}
 
+	//parses date string into an int[] of size 3
 	private int[] parseDate(String dateStr)
 	{
 		String[] strArr = dateStr.split("/");
@@ -81,6 +91,8 @@ public class TaskList
 		return null;
 	}
 
+	//prompts the user for all information needed to add a task to the TaskList
+	//then adds that task to the TaskList
 	private void userAddTask()
 	{
 		Scanner reader = new Scanner(System.in);
@@ -114,6 +126,7 @@ public class TaskList
 		nextTaskID++;
 	}
 
+	//prints out all tasks currently in task list
 	private void listAllTasks()
 	{
 		for(int i = 0; i < tasks.size(); i++)
@@ -122,19 +135,21 @@ public class TaskList
 		}
 	}
 
+	//prints out the highest priority task currently in the list
+	//TODO if two tasks tie for highest priority, print the one with the sooner due date
 	private void getNowTask()
 	{
 		Task now = new Task(-1, null, null, 0);
 
 		for(int i = 0; i < tasks.size(); i++)
 		{
-			if(now.getPrioPoints() < tasks.get(i).getPrioPoints())
+			if(now.getPriority() < tasks.get(i).getPriority())
 			{
 				now = tasks.get(i);
 			}
 		}
 
-		if(now.getTaskID() == -1)
+		if(now.getId() == -1)
 		{
 			System.out.println("Error: Failed to get now task. Maybe not enough tasks entered.");
 			return;
@@ -144,6 +159,7 @@ public class TaskList
 		System.out.println(now);
 	}
 
+	//decides what to do with the command the user entered
 	private void useCommand(String command)
 	{
 		switch(command)
@@ -168,6 +184,7 @@ public class TaskList
 		}
 	}
 
+	//prompts the user for a command and calls useCommand() once a command is entered
 	public void getCommand(boolean help)
 	{
 		Scanner reader = new Scanner(System.in);
