@@ -1,5 +1,3 @@
-package src;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,14 +9,7 @@ public class Task
 	private int complHrs;
 	private int prioPoints;
 
-	/**
-	 *Constructs a Task object
-	 *
-	 *@param taskID A unique ID number that corresponds to that task
-	 *@param taskDesc A description of the task
-	 *@param dueDate Date the task is due as Calendar object
-	 *@param ocmplHrs Estimated amount of hours it will take to complete task
-	 */
+
 	public Task(int taskID, String taskDesc, Calendar dueDate, int complHrs)
 	{
 		this.taskID = taskID;
@@ -79,12 +70,6 @@ public class Task
 		prioPoints = (complHrs / diffHr) * 100;
 	}
 
-	/**
-	 *Returns the taskID for the task
-	 *taskID is an integer identifier for that task
-	 *
-	 *@return taskID
-	 */
 	public int getTaskID()
 	{
 		return taskID;
