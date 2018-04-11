@@ -4,7 +4,7 @@ A program that keeps track of all the tasks you have to do and decides for you w
 
 ## Background Info
 
-I have 
+I am a college student computer science major. It is sometimes difficult to manage my work and decide which tasks are highest priority. I am writing this program to do exactly that. It keeps track of tasks that need to be done and calculates which task should be prioritized.
 
 ## Running
 
