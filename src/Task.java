@@ -1,38 +1,46 @@
+/*
+ *This class handles every part of a task, getters and setters for information on the task, and priority of the task
+ *Once a Task object is constructed, use of setters is not required.
+ */
+
 import java.util.Calendar;
 import java.util.Date;
 
 public class Task
 {
-	private int taskID;
-	private String taskDesc;
-	private Calendar dueDate;
-	private int complHrs;
-	private int prioPoints;
+	private int id; //identifier for the object
+	private String desc; //description of the task
+	private Calendar deadln; //deadline
+	private int complHrs; //hours to completion
+	private int priority; //priority level calculated based on deadline and hours to completion
 
-
-	public Task(int taskID, String taskDesc, Calendar dueDate, int complHrs)
+	//Constructor
+	//Creates a task with the information entered
+	public Task(int id, String desc, Calendar deadln, int complHrs)
 	{
-		this.taskID = taskID;
-		this.taskDesc = taskDesc;
-		this.dueDate = dueDate;
+		this.id = id;
+		this.desc = desc;
+		this.deadln = deadln;
 		this.complHrs = complHrs;
-		calcPrioPoints();
+		calcPriority();
 	}
 
-	private void calcPrioPoints()
+
+	//calculates the priority of the task based on deadline date and hours it will take to complete
+	private void calcPriority()
 	{
-		if(dueDate == null)
+		if(deadln == null)
 		{
-			prioPoints = -1;
+			priority = -1;
 			return;
 		}
 		Calendar currDate = Calendar.getInstance();
 
-		int diffYr = dueDate.get(Calendar.YEAR) - currDate.get(Calendar.YEAR);
-		int diffMnth = dueDate.get(Calendar.MONTH) - currDate.get(Calendar.MONTH);
-		int diffDay = dueDate.get(Calendar.DAY_OF_MONTH) - currDate.get(Calendar.DAY_OF_MONTH);
-		int diffHr = dueDate.get(Calendar.HOUR_OF_DAY) - currDate.get(Calendar.HOUR_OF_DAY);
-		int diffMin = dueDate.get(Calendar.MINUTE) - currDate.get(Calendar.MINUTE);
+		int diffYr = deadln.get(Calendar.YEAR) - currDate.get(Calendar.YEAR);
+		int diffMnth = deadln.get(Calendar.MONTH) - currDate.get(Calendar.MONTH);
+		int diffDay = deadln.get(Calendar.DAY_OF_MONTH) - currDate.get(Calendar.DAY_OF_MONTH);
+		int diffHr = deadln.get(Calendar.HOUR_OF_DAY) - currDate.get(Calendar.HOUR_OF_DAY);
+		int diffMin = deadln.get(Calendar.MINUTE) - currDate.get(Calendar.MINUTE);
 
 		if(diffMin < 0)
 		{
@@ -60,63 +68,80 @@ public class Task
 
 		if(diffYr < 0)
 		{
-			prioPoints = -1;
+			priority = -1;
 		}
 
 		diffHr += diffDay * 24;
 		diffHr += diffMnth * 720;
 		diffHr += diffYr * 8640;
 
-		prioPoints = (complHrs / diffHr) * 100;
+		priority = (complHrs / diffHr) * 100;
 	}
 
-	public int getTaskID()
+	//Getter
+	//returns the id value
+	public int getId()
 	{
-		return taskID;
+		return id;
 	}
 
-	public void setTaskDesc(String newTaskDesc)
+	//Setter
+	//sets the description
+	public void setDesc(String newDesc)
 	{
-		taskDesc = newTaskDesc;
+		desc = newDesc;
 	}
 
-	public String getTaskDesc()
+	//Getter
+	//returns the description
+	public String getDesc()
 	{
-		return taskDesc;
+		return desc;
 	}
 
-	public void setDueDate(Calendar newDueDate)
+	//Setter
+	//sets deadline
+	public void setDeadln(Calendar newDeadln)
 	{
-		dueDate = newDueDate;
+		deadln = newDeadln;
 	}
 
-	public Calendar getDueDate()
+	//Getter
+	//returns deadline
+	public Calendar getDeadln()
 	{
-		return dueDate;
+		return deadln;
 	}
 
+	//Setter
+	//sets hours to completion
 	public void setComplHrs(int newComplHrs)
 	{
 		complHrs = newComplHrs;
 	}
 
+	//Getter
+	//returns hours to completion
 	public int getComplHrs()
 	{
 		return complHrs;
 	}
 
-	public double getPrioPoints()
+	//Getter
+	//returns priority of the task
+	public double getPriority()
 	{
-		return prioPoints;
+		return priority;
 	}
 
+	//returns a string of all the important information
 	@Override
 	public String toString()
 	{
 		return 
-			"taskID: " + taskID + "\tTask Description: " + taskDesc 
+			"id: " + id + "\tTask Description: " + desc 
 			+ 
-			"\n\t Due: " + dueDate.getTime() + "\tCompletion Hours: " + complHrs;
+			"\n\t Due: " + deadln.getTime() + "\tCompletion Hours: " + complHrs;
 	}
 
 }
