@@ -10,8 +10,11 @@ I have
 
 Compile the source code with javac and run Main with java
 
->javac *.java
+Console commands:
+>javac *.java  
 >java Main
+
+or load source code into an IDE like Eclipse and compile it that way
 
 Then follow the program's instructions.
 
