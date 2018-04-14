@@ -17,6 +17,11 @@ public class TaskList
 	public TaskList()
 	{
 		tasks = new ArrayList<Task>();
+		Calendar date = Calendar.getInstance();
+		date.set(0, 0, 0, 0, 0);
+		Task task = new Task(nextTaskID, "Code Task Manager", date, 5);
+		tasks.add(task);
+		
 	}
 
 	//prints out the list of possible commands for the user
@@ -25,7 +30,8 @@ public class TaskList
 		System.out.println("Commands:");
 		System.out.println("\thelp: print a list of possible commands");
 		System.out.println("\tadd: add a task to the task list");
-		System.out.println("\tall: list all tasks in the task list");
+		System.out.println("\tedit: edit an already existing task");
+		System.out.println("\tlist: list all tasks in the task list");
 		System.out.println("\tnow: print the highest priority task");
 		System.out.println("\tq: exits the program");
 	}
@@ -91,19 +97,23 @@ public class TaskList
 		return null;
 	}
 
-	//prompts the user for all information needed to add a task to the TaskList
-	//then adds that task to the TaskList
-	private void userAddTask()
+	//prompts the user for a new description for a task
+	private String getTaskDesc(Scanner sc)
 	{
-		Scanner reader = new Scanner(System.in);
+		sc = new Scanner(System.in);
 		System.out.println("Enter task description");
-		String taskDesc = reader.next();
-
+		String taskDesc = sc.nextLine();
+		return taskDesc;
+	}
+	
+	//prompts the user for a date and time for the due date of a task
+	private Calendar getDeadln(Scanner sc)
+	{		
 		int[] dateArr = null;
 		while(dateArr == null)
 		{
 			System.out.println("Enter due date (mm/dd/yyyy)");
-			String dueDate = reader.next();
+			String dueDate = sc.next();
 			dateArr = parseDate(dueDate);
 		}
 
@@ -111,16 +121,40 @@ public class TaskList
 		while(time == null)
 		{
 			System.out.println("Enter due time in 24 hour time (hh:mm)");
-			String dueTime = reader.next();
+			String dueTime = sc.next();
 			time = parseTime(dueTime);
 		}
 
 		Calendar date = Calendar.getInstance();
 		date.set(dateArr[2], dateArr[0], dateArr[1], time[0], time[1]);
-
-		System.out.println("Enter estimated amount of hours to complete task");
-		int complHrs = reader.nextInt();
-
+		
+		return date;
+	}
+	
+	//prompts user for a completion hours for the task
+	private int getComplHrs(Scanner sc)
+	{
+		int complHrs = -1;
+		while(complHrs == -1)
+		{
+			System.out.println("Enter estimated amount of hours to complete task");
+			if(sc.hasNextInt())
+			{
+				complHrs = sc.nextInt();
+			}
+		}
+		
+		return complHrs;
+	}
+	
+	//prompts the user for all information needed to add a task to the TaskList
+	//then adds that task to the TaskList
+	private void userAddTask(Scanner sc)
+	{		
+		String taskDesc = getTaskDesc(sc);
+		Calendar date = getDeadln(sc);
+		int complHrs = getComplHrs(sc);
+		
 		Task newTask = new Task(nextTaskID, taskDesc, date, complHrs);
 		tasks.add(newTask);
 		nextTaskID++;
@@ -129,6 +163,12 @@ public class TaskList
 	//prints out all tasks currently in task list
 	private void listAllTasks()
 	{
+		if(tasks.size() <= 0)
+		{
+			System.out.println("No tasks entered");
+			return;
+		}
+			
 		for(int i = 0; i < tasks.size(); i++)
 		{
 			System.out.println(tasks.get(i).toString());
@@ -136,31 +176,117 @@ public class TaskList
 	}
 
 	//prints out the highest priority task currently in the list
-	//TODO if two tasks tie for highest priority, print the one with the sooner due date
-	private void getNowTask()
+	private void getHighestPrio()
 	{
-		Task now = new Task(-1, null, null, 0);
-
+		int maxPrio = -1;
+		
 		for(int i = 0; i < tasks.size(); i++)
 		{
-			if(now.getPriority() < tasks.get(i).getPriority())
+			if(tasks.get(i).getPriority() > maxPrio)
 			{
-				now = tasks.get(i);
+				maxPrio = tasks.get(i).getPriority();
+			}
+		}
+		
+		ArrayList<Task> prioTasks = new ArrayList<>();
+		
+		for(int i = 0; i < tasks.size(); i++)
+		{
+			if(tasks.get(i).getPriority() == maxPrio)
+			{
+				prioTasks.add(tasks.get(i));
+			}
+		}
+		
+		if(prioTasks.size() <= 0)
+		{
+			System.out.println("Error: Failed to get now task. Maybe not enough tasks entered.");
+			return;
+		}
+		
+		Task prioTask = new Task(-1, null, null, 0);
+
+		for(int i = 0; i < prioTasks.size(); i++)
+		{
+			if(prioTask.getDeadln() == null)
+			{
+				 prioTask = prioTasks.get(i);
+				 continue;
+			}
+			else if(prioTasks.get(i).getDeadln().get(Calendar.DATE) < prioTask.getDeadln().get(Calendar.DATE))
+			{
+				prioTask = tasks.get(i);
 			}
 		}
 
-		if(now.getId() == -1)
+		if(prioTask.getId() == -1)
 		{
 			System.out.println("Error: Failed to get now task. Maybe not enough tasks entered.");
 			return;
 		}
 
 		System.out.println("Now task:");
-		System.out.println(now);
+		System.out.println(prioTask);
 	}
 
+	
+	//decides what to do with the user's command for editing a task
+	private boolean useEditCommand(String editCmd, int id, Scanner sc)
+	{
+		switch (editCmd)
+		{
+			case "description":
+				String newDesc = getTaskDesc(sc);
+				tasks.get(id).setDesc(newDesc);
+				break;
+			case "deadline":
+				Calendar newDeadln = getDeadln(sc);
+				tasks.get(id).setDeadln(newDeadln);
+				break;
+			case "completion hours":
+				int newComplHrs = getComplHrs(sc);
+				tasks.get(id).setComplHrs(newComplHrs);
+				break;
+			default:
+				return false;
+		}
+		return true;
+	}
+	
+	//prompts the user for which task they want to edit and what part of the task to edit
+	private void editTask(Scanner sc)
+	{
+		System.out.println("Enter a task ID");
+		int id = sc.nextInt();
+		Task task = null;
+		for(int i = 0; i < tasks.size(); i++)
+		{
+			if(tasks.get(i).getId() == id)
+			{
+				task = tasks.get(i);
+			}
+		}
+		if(task == null)
+		{
+			System.out.println("Could not find a task by that id");
+			return;
+		}
+
+		sc = new Scanner(System.in);
+		System.out.println("What do you want to edit?");
+		System.out.println("You can edit 'description', 'deadline', 'completion hours'");
+		String editCmd = sc.nextLine();
+		
+		boolean command = useEditCommand(editCmd, id, sc);
+		
+		if(!command)
+		{
+			System.out.println("Not recognized");
+		}
+	}
+	
 	//decides what to do with the command the user entered
-	private void useCommand(String command)
+	private void useCommand(String command, Scanner sc)
 	{
 		switch(command)
 		{
@@ -168,13 +294,16 @@ public class TaskList
 				printCommandsList();
 				break;
 			case "add":
-				userAddTask();
+				userAddTask(sc);
 				break;
-			case "all":
+			case "list":
 				listAllTasks();
 				break;
 			case "now":
-				getNowTask();
+				getHighestPrio();
+				break;
+			case "edit":
+				editTask(sc);
 				break;
 			case "q":
 				System.exit(0);
@@ -185,13 +314,13 @@ public class TaskList
 	}
 
 	//prompts the user for a command and calls useCommand() once a command is entered
-	public void getCommand(boolean help)
+	public boolean getCommand(boolean help, Scanner sc)
 	{
-		Scanner reader = new Scanner(System.in);
 		System.out.println("Enter a command");
 		if(help)
 			System.out.println("Enter \"help\" for a list of commands");
-		String command = reader.next();
-		useCommand(command);
+		String command = sc.next();
+		useCommand(command, sc);
+		return true;
 	}
 }
