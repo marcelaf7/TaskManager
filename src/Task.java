@@ -4,7 +4,6 @@
  */
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Task
 {
@@ -129,7 +128,7 @@ public class Task
 
 	//Getter
 	//returns priority of the task
-	public double getPriority()
+	public int getPriority()
 	{
 		return priority;
 	}
