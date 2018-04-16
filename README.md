@@ -2,21 +2,21 @@
 
 A program that keeps track of all the tasks you have to do and decides for you which task is highest priority.
 
-## Getting Started
+## Background Info
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+I am a college student computer science major. It is sometimes difficult to manage my work and decide which tasks are highest priority. I am writing this program to do exactly that. It keeps track of tasks that need to be done and calculates which task should be prioritized.
 
-### Prerequisites
+## Running
 
-Java compiler
+Compile the source code with javac and run Main with java
 
+Console commands:
+>javac *.java  
+>java Main
 
-### Installing
+or load source code into an IDE like Eclipse and compile it that way
 
-No installer yet. Compile the source code with a Java compiler and run Main with Java.
-Or open the source code in an IDE and compile it that way.
-
-Just enter commands when the program asks for them!
+Then follow the program's instructions.
 
 ## Built With
 
@@ -24,7 +24,7 @@ Just enter commands when the program asks for them!
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/marcelaf7/NoFileYet) for details on our code of conduct, and the process for submitting pull requests to us.
+Feel free to fork and make pull requests for anything. Contributing instructions will be posted soon.
 
 ## Authors
 
