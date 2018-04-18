@@ -8,7 +8,7 @@ import java.util.Calendar;
 public class TaskList
 {
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
-	private int nextTaskID = 0; //holds the id value of the next Task that will be constructed
+	private int nextTaskId = 0; //holds the id value of the next Task that will be constructed
 
 	//Constructor
 	//Creates an empty TaskList
@@ -17,8 +17,24 @@ public class TaskList
 		tasks = new ArrayList<Task>();
 		Calendar date = Calendar.getInstance();
 		date.set(0, 0, 0, 0, 0);
-		Task task = new Task(nextTaskID, "Code Task Manager", date, 5);
+		Task task = new Task(nextTaskId, "Code Task Manager", date, 5);
 		tasks.add(task);
+		nextTaskId++;
+	}
+
+	//adds task to task list and returns whether or not it was successful
+	public boolean addTask(String desc, Calendar deadln, int complHrs)
+	{
+		Task newTask = new Task(nextTaskId, desc, deadln, complHrs);
+		
+		if(newTask == null)
+		{
+			return false;
+		}
+
+		tasks.add(newTask);
+		nextTaskId++;
+		return true;
 	}
 
 	//Returns whether a task with id is in the task list
@@ -31,6 +47,24 @@ public class TaskList
 				return true;
 			}
 		}
+		return false;
+	}
+
+	//Edits the deadline of task with id
+	public boolean editTask(int id, Calendar deadln)
+	{
+		return false;
+	}
+
+	//Edits description of task with id
+	public boolean editTask(int id, String desc)
+	{
+		return false;
+	}
+
+	//Edits completion hours of task with id
+	public boolean editTask(int id, int complHrs)
+	{
 		return false;
 	}
 
@@ -88,13 +122,19 @@ public class TaskList
 		System.out.println(prioTask);
 	}
 
-	//prints out all tasks currently in task list
+	//Returns the highest priority task as a String
+	public String now()
+	{
+		return null;
+	}
+
+	//Returns a string of all tasks currently in task list
 	@Override
 	public String toString()
 	{
 		if(tasks.size() <= 0)
 		{
-			return null;
+			return "No tasks in task list";
 		}
 
 		String str = "";

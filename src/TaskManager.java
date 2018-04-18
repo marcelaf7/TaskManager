@@ -177,9 +177,7 @@ class TaskManager
 
 		if(desc != null && date != null && complHrs >= 0)
 		{
-			System.out.println("Theoretically added: " + desc + " Due: " + date + " Estimated: " + complHrs);
-
-			//tl.addTask(promptUserDesc(sc), promptUserDeadln(sc), promptUserComplHrs(sc));
+			tl.addTask(desc, date, complHrs);
 			return true;
 		}
 
@@ -190,22 +188,16 @@ class TaskManager
 	public boolean userEditTask(Scanner sc)
 	{
 /*		System.out.println("Enter a task ID");
-		int id = sc.nextInt();
-		
+		int id = sc.nextLine();
 
-		sc = new Scanner(System.in);
 		System.out.println("What do you want to edit?");
-		System.out.println("You can edit 'description', 'deadline', 'completion hours'");
+		System.out.println("Please enter 'description', 'deadline', 'completion hours'");
 		String editCmd = sc.nextLine();
-		
-		boolean command = useEditCommand(editCmd, id, sc);
 		
 		if(!command)
 		{
 			System.out.println("Not recognized");
 		}
-
-		String editCmd = "";
 
 		switch (editCmd)
 		{
@@ -247,15 +239,22 @@ class TaskManager
 					tm.printCmds();
 					break;
 				case "add":
-					tm.userAddTask(sc);
+					if(tm.userAddTask(sc))
+						System.out.println("Task added successfully");
+					else
+						System.err.println("There was an error adding the task");
 					break;
 				case "edit":
-					tm.userEditTask(sc);
+					if(tm.userEditTask(sc))
+						System.out.println("Task edited successfully");
+					else
+						System.out.println("There was an error editing the task");
 					break;
 				case "list":
 					System.out.println(tm.getTl());
 					break;
 				case "now":
+					System.out.println(tm.getTl().now());
 					break;
 				case "q":
 					System.out.println("Exiting");
