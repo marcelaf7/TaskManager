@@ -104,9 +104,9 @@ public class TaskList
 		return true;
 	}
 
-	//prints out the highest priority task currently in the list
+	//returns the highest priority task currently in the list
 	//TODO make this return something instead of printing
-	private void getHighestPrio()
+	private Task getHighestPrio()
 	{
 		int maxPrio = -1;
 		
@@ -130,8 +130,12 @@ public class TaskList
 		
 		if(prioTasks.size() <= 0)
 		{
-			System.out.println("Error: Failed to get now task. Maybe not enough tasks entered.");
-			return;
+			return null;
+		}
+
+		if(prioTasks.size() == 1)
+		{
+			return prioTasks.get(0);
 		}
 		
 		Task prioTask = new Task(-1, null, null, 0);
@@ -151,19 +155,24 @@ public class TaskList
 
 		if(prioTask.getId() == -1)
 		{
-			System.out.println("Error: Failed to get now task. Maybe not enough tasks entered.");
-			return;
+			return null;
 		}
 
-		System.out.println("Now task:");
-		System.out.println(prioTask);
+		return prioTask;
 	}
 
 	//Returns the highest priority task as a String
 	//TODO make this return a string
 	public String now()
 	{
-		return null;
+		Task now = getHighestPrio();
+
+		if(now == null)
+		{
+			return "ERROR: Highest priority task could not be found.";
+		}
+
+		return now.toString();
 	}
 
 	//Returns a string of all tasks currently in task list
