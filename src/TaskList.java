@@ -50,25 +50,62 @@ public class TaskList
 		return false;
 	}
 
+	public Task getTaskById(int id)
+	{
+		for(int i = 0; i < tasks.size(); i++)
+		{
+			if(tasks.get(i).getId() == id)
+			{
+				return tasks.get(i);
+			}
+		}
+		return null;
+	}
+
 	//Edits the deadline of task with id
 	public boolean editTask(int id, Calendar deadln)
 	{
-		return false;
+		Task idTask = getTaskById(id);
+
+		if(idTask == null)
+		{
+			return false;
+		}
+
+		idTask.setDeadln(deadln);
+		return true;
 	}
 
 	//Edits description of task with id
 	public boolean editTask(int id, String desc)
 	{
-		return false;
+		Task idTask = getTaskById(id);
+
+		if(idTask == null)
+		{
+			return false;
+		}
+
+		idTask.setDesc(desc);
+		return true;
 	}
 
 	//Edits completion hours of task with id
 	public boolean editTask(int id, int complHrs)
 	{
-		return false;
+		Task idTask = getTaskById(id);
+
+		if(idTask == null)
+		{
+			return false;
+		}
+
+		idTask.setComplHrs(complHrs);
+		return true;
 	}
 
 	//prints out the highest priority task currently in the list
+	//TODO make this return something instead of printing
 	private void getHighestPrio()
 	{
 		int maxPrio = -1;
@@ -123,6 +160,7 @@ public class TaskList
 	}
 
 	//Returns the highest priority task as a String
+	//TODO make this return a string
 	public String now()
 	{
 		return null;

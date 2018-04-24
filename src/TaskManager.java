@@ -10,6 +10,7 @@ class TaskManager
 {
 	private TaskList tl = new TaskList();
 
+	//constructor
 	public TaskList getTl()
 	{
 		return tl;
@@ -184,41 +185,82 @@ class TaskManager
 		return false;
 	}
 
-	//TODO this code actually does nothing
+	//prompts the user for a task ID
+	//returns the ID when the user enters a valid ID
+	public int promptUserTaskId(Scanner sc)
+	{
+		int id = -1;
+
+		while(id == -1)
+		{
+			try
+			{
+				System.out.println("Enter a task ID");
+				String intId = sc.nextLine();
+				id = Integer.parseInt(intId);
+			}
+			catch(NumberFormatException e)
+			{
+				id = -1;
+				continue;
+			}
+			if(!tl.inTaskList(id))
+			{
+				id = -1;
+				continue;
+			}
+
+		}
+
+		return id;
+	}
+
+	//prompts user for which part of the task they want to edit
+	//returns the string they enter
+	public String promptUserEditCmd(Scanner sc)
+	{
+		String editCmd = "";
+		System.out.println("What do you want to edit?");
+
+		while(editCmd.equals(""))
+		{
+			System.out.println("Please enter 'description', 'deadline', or 'completion hours'");
+			editCmd = sc.nextLine();
+			
+			if(editCmd.equals("description") || editCmd.equals("deadline") || editCmd.equals("completion hours"))
+			{
+				return editCmd;
+			}
+			else
+			{
+				editCmd = "";
+			}
+		}
+
+		return editCmd;
+	}
+
+	//prompt the user for all information needed to edit a task
 	public boolean userEditTask(Scanner sc)
 	{
-/*		System.out.println("Enter a task ID");
-		int id = sc.nextLine();
-
-		System.out.println("What do you want to edit?");
-		System.out.println("Please enter 'description', 'deadline', 'completion hours'");
-		String editCmd = sc.nextLine();
-		
-		if(!command)
-		{
-			System.out.println("Not recognized");
-		}
+		int id = promptUserTaskId(sc);
+		String editCmd = promptUserEditCmd(sc);
 
 		switch (editCmd)
 		{
 			case "description":
-				String newDesc = getTaskDesc(sc);
-				tasks.get(id).setDesc(newDesc);
+				tl.editTask(id, promptUserDesc(sc));
 				break;
 			case "deadline":
-				Calendar newDeadln = getDeadln(sc);
-				tasks.get(id).setDeadln(newDeadln);
+				tl.editTask(id, promptUserDeadln(sc));
 				break;
 			case "completion hours":
-				int newComplHrs = getComplHrs(sc);
-				tasks.get(id).setComplHrs(newComplHrs);
+				tl.editTask(id, promptUserComplHrs(sc));
 				break;
 			default:
 				return false;
 		}
-		return true;*/
-
-		return false;
+		return true;
 	}
 
 	//main function
