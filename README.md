@@ -8,13 +8,15 @@ I am a college student computer science major. It is sometimes difficult to mana
 
 ## Running
 
-Compile the source code with javac and run Main with java
+Until an official release is made, you will have to compile from the source code.
+
+Compile the code using JDK and run TasdkManager.
 
 Console commands:
 >javac *.java  
->java Main
+>java TaskManager
 
-or load source code into an IDE like Eclipse and compile it that way
+or load the source code into an IDE like Eclipse or NetBeans and run it
 
 Then follow the program's instructions.
 
