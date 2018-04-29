@@ -50,6 +50,8 @@ public class TaskList
 		return false;
 	}
 
+	//takes an id as a paramete
+	//returns a task from the tasklist with that id
 	public Task getTaskById(int id)
 	{
 		for(int i = 0; i < tasks.size(); i++)
@@ -104,8 +106,20 @@ public class TaskList
 		return true;
 	}
 
+	public boolean deleteTask(int id)
+	{
+		for(int i = 0; i < tasks.size(); i++)
+		{
+			if(tasks.get(i).getId() == id)
+			{
+				tasks.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	//returns the highest priority task currently in the list
-	//TODO make this return something instead of printing
 	private Task getHighestPrio()
 	{
 		int maxPrio = -1;
@@ -162,7 +176,6 @@ public class TaskList
 	}
 
 	//Returns the highest priority task as a String
-	//TODO make this return a string
 	public String now()
 	{
 		Task now = getHighestPrio();
