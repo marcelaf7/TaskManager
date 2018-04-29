@@ -2,7 +2,6 @@
  *This class handles all user input and input
  */
 
-
 import java.util.Scanner;
 import java.util.Calendar;
 
@@ -22,6 +21,7 @@ class TaskManager
 		{"help", "print a list of possible commands"},
 		{"add", "add a task to the task list"},
 		{"edit", "edit a task already in the task list"},
+		{"delete", "delete a task from the task list"},
 		{"list", "list all tasks in the task list"},
 		{"now", "print the highest priority task"},
 		{"q", "exits the program"}
@@ -46,7 +46,6 @@ class TaskManager
 
 		return sc.nextLine();
 	}
-
 
 	//Parse date string and return Calendar set to that date
 	//return Calendar
@@ -263,6 +262,15 @@ class TaskManager
 		return true;
 	}
 
+	//prompt the user for a task to delete
+	public boolean userDeleteTask(Scanner sc)
+	{
+		int taskId = promptUserTaskId(sc);
+		if(tl.deleteTask(taskId))
+			return true;
+		return false;
+	}
+
 	//main function
 	//loops until user enters "q" to quit the program
 	public static void main(String[] args) 
@@ -297,6 +305,12 @@ class TaskManager
 					break;
 				case "now":
 					System.out.println(tm.getTl().now());
+					break;
+				case "delete":
+					if(tm.userDeleteTask(sc))
+						System.out.println("Task deleted successfully");
+					else
+						System.out.println("There was an error deleting the task");
 					break;
 				case "q":
 					System.out.println("Exiting");
