@@ -22,6 +22,12 @@ public class TaskList
 		nextTaskId++;
 	}
 
+	//returns the size of the task list
+	public int size()
+	{
+		return tasks.size();
+	}
+
 	//adds task to task list and returns whether or not it was successful
 	public boolean addTask(String desc, Calendar deadln, int complHrs)
 	{

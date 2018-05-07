@@ -242,6 +242,12 @@ class TaskManager
 	//prompt the user for all information needed to edit a task
 	public boolean userEditTask(Scanner sc)
 	{
+		if(tl.size() <= 0)
+		{
+			System.out.println("No tasks in task list");
+			return false;
+		}
+
 		int id = promptUserTaskId(sc);
 		String editCmd = promptUserEditCmd(sc);
 
@@ -265,6 +271,12 @@ class TaskManager
 	//prompt the user for a task to delete
 	public boolean userDeleteTask(Scanner sc)
 	{
+		if(tl.size() <= 0)
+		{
+			System.out.println("No tasks in task list");
+			return false;
+		}
+
 		int taskId = promptUserTaskId(sc);
 		if(tl.deleteTask(taskId))
 			return true;
