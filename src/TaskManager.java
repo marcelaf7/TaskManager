@@ -194,8 +194,10 @@ class TaskManager
 		{
 			try
 			{
-				System.out.println("Enter a task ID");
+				System.out.println("Enter a task ID\nor enter 'c' to cancel");
 				String intId = sc.nextLine();
+				if(intId.equals("c"))
+					return -1;
 				id = Integer.parseInt(intId);
 			}
 			catch(NumberFormatException e)
@@ -249,6 +251,9 @@ class TaskManager
 		}
 
 		int id = promptUserTaskId(sc);
+		if(id == -1)
+			return false;
+
 		String editCmd = promptUserEditCmd(sc);
 
 		switch (editCmd)
@@ -278,7 +283,7 @@ class TaskManager
 		}
 
 		int taskId = promptUserTaskId(sc);
-		if(tl.deleteTask(taskId))
+		if(tl.deleteTask(taskId) && taskId >= 0)
 			return true;
 		return false;
 	}
