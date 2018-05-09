@@ -5,15 +5,13 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class TaskList
-{
+public class TaskList{
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
 	private int nextTaskId = 0; //holds the id value of the next Task that will be constructed
 
 	//Constructor
 	//Creates an empty TaskList
-	public TaskList()
-	{
+	public TaskList(){
 		tasks = new ArrayList<Task>();
 		Calendar date = Calendar.getInstance();
 		date.set(0, 0, 0, 0, 0);
@@ -23,18 +21,14 @@ public class TaskList
 	}
 
 	//returns the size of the task list
-	public int size()
-	{
+	public int size(){
 		return tasks.size();
 	}
 
 	//adds task to task list and returns whether or not it was successful
-	public boolean addTask(String desc, Calendar deadln, int complHrs)
-	{
+	public boolean addTask(String desc, Calendar deadln, int complHrs){
 		Task newTask = new Task(nextTaskId, desc, deadln, complHrs);
-		
-		if(newTask == null)
-		{
+		if(newTask == null){
 			return false;
 		}
 
@@ -44,12 +38,9 @@ public class TaskList
 	}
 
 	//Returns whether a task with id is in the task list
-	public boolean inTaskList(int id)
-	{
-		for(int i = 0; i < tasks.size(); i++)
-		{
-			if(tasks.get(i).getId() == id)
-			{
+	public boolean inTaskList(int id){
+		for(int i = 0; i < tasks.size(); i++){
+			if(tasks.get(i).getId() == id){
 				return true;
 			}
 		}
@@ -58,12 +49,9 @@ public class TaskList
 
 	//takes an id as a paramete
 	//returns a task from the tasklist with that id
-	public Task getTaskById(int id)
-	{
-		for(int i = 0; i < tasks.size(); i++)
-		{
-			if(tasks.get(i).getId() == id)
-			{
+	public Task getTaskById(int id){
+		for(int i = 0; i < tasks.size(); i++){
+			if(tasks.get(i).getId() == id){
 				return tasks.get(i);
 			}
 		}
@@ -71,12 +59,9 @@ public class TaskList
 	}
 
 	//Edits the deadline of task with id
-	public boolean editTask(int id, Calendar deadln)
-	{
+	public boolean editTask(int id, Calendar deadln){
 		Task idTask = getTaskById(id);
-
-		if(idTask == null)
-		{
+		if(idTask == null){
 			return false;
 		}
 
@@ -85,12 +70,9 @@ public class TaskList
 	}
 
 	//Edits description of task with id
-	public boolean editTask(int id, String desc)
-	{
+	public boolean editTask(int id, String desc){
 		Task idTask = getTaskById(id);
-
-		if(idTask == null)
-		{
+		if(idTask == null){
 			return false;
 		}
 
@@ -99,12 +81,9 @@ public class TaskList
 	}
 
 	//Edits completion hours of task with id
-	public boolean editTask(int id, int complHrs)
-	{
+	public boolean editTask(int id, int complHrs){
 		Task idTask = getTaskById(id);
-
-		if(idTask == null)
-		{
+		if(idTask == null){
 			return false;
 		}
 
@@ -112,12 +91,9 @@ public class TaskList
 		return true;
 	}
 
-	public boolean deleteTask(int id)
-	{
-		for(int i = 0; i < tasks.size(); i++)
-		{
-			if(tasks.get(i).getId() == id)
-			{
+	public boolean deleteTask(int id){
+		for(int i = 0; i < tasks.size(); i++){
+			if(tasks.get(i).getId() == id){
 				tasks.remove(i);
 				return true;
 			}
@@ -126,91 +102,65 @@ public class TaskList
 	}
 
 	//returns the highest priority task currently in the list
-	private Task getHighestPrio()
-	{
+	private Task getHighestPrio(){
 		int maxPrio = -1;
-		
-		for(int i = 0; i < tasks.size(); i++)
-		{
-			if(tasks.get(i).getPriority() > maxPrio)
-			{
+		for(int i = 0; i < tasks.size(); i++){
+			if(tasks.get(i).getPriority() > maxPrio){
 				maxPrio = tasks.get(i).getPriority();
 			}
 		}
 		
 		ArrayList<Task> prioTasks = new ArrayList<>();
-		
-		for(int i = 0; i < tasks.size(); i++)
-		{
-			if(tasks.get(i).getPriority() == maxPrio)
-			{
+		for(int i = 0; i < tasks.size(); i++){
+			if(tasks.get(i).getPriority() == maxPrio){
 				prioTasks.add(tasks.get(i));
 			}
 		}
 		
-		if(prioTasks.size() <= 0)
-		{
+		if(prioTasks.size() <= 0){
 			return null;
 		}
 
-		if(prioTasks.size() == 1)
-		{
+		if(prioTasks.size() == 1){
 			return prioTasks.get(0);
 		}
 		
 		Task prioTask = new Task(-1, null, null, 0);
-
-		for(int i = 0; i < prioTasks.size(); i++)
-		{
-			if(prioTask.getDeadln() == null)
-			{
+		for(int i = 0; i < prioTasks.size(); i++){
+			if(prioTask.getDeadln() == null){
 				 prioTask = prioTasks.get(i);
 				 continue;
-			}
-			else if(prioTasks.get(i).getDeadln().get(Calendar.DATE) < prioTask.getDeadln().get(Calendar.DATE))
-			{
+			}else if(prioTasks.get(i).getDeadln().get(Calendar.DATE) < prioTask.getDeadln().get(Calendar.DATE)){
 				prioTask = tasks.get(i);
 			}
 		}
 
-		if(prioTask.getId() == -1)
-		{
+		if(prioTask.getId() == -1){
 			return null;
 		}
-
 		return prioTask;
 	}
 
 	//Returns the highest priority task as a String
-	public String now()
-	{
+	public String now(){
 		Task now = getHighestPrio();
-
-		if(now == null)
-		{
+		if(now == null){
 			return "ERROR: Highest priority task could not be found.";
 		}
-
 		return now.toString();
 	}
 
 	//Returns a string of all tasks currently in task list
 	@Override
-	public String toString()
-	{
-		if(tasks.size() <= 0)
-		{
+	public String toString(){
+		if(tasks.size() <= 0){
 			return "No tasks in task list";
 		}
 
 		String str = "";
-			
-		for(int i = 0; i < tasks.size(); i++)
-		{
+		for(int i = 0; i < tasks.size(); i++){
 			str += "\n" + tasks.get(i).toString();
 		}
-
 		return str;
 	}
-	
 }
