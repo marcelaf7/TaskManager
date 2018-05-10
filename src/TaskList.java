@@ -61,7 +61,7 @@ public class TaskList{
 	//Edits the deadline of task with id
 	public boolean editTask(int id, Calendar deadln){
 		Task idTask = getTaskById(id);
-		if(idTask == null){
+		if(idTask == null || deadln == null){
 			return false;
 		}
 
@@ -72,7 +72,7 @@ public class TaskList{
 	//Edits description of task with id
 	public boolean editTask(int id, String desc){
 		Task idTask = getTaskById(id);
-		if(idTask == null){
+		if(idTask == null || desc == null || desc == ""){
 			return false;
 		}
 
@@ -83,7 +83,7 @@ public class TaskList{
 	//Edits completion hours of task with id
 	public boolean editTask(int id, int complHrs){
 		Task idTask = getTaskById(id);
-		if(idTask == null){
+		if(idTask == null || complHrs < 0){
 			return false;
 		}
 

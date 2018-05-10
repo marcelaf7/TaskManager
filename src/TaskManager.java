@@ -131,7 +131,7 @@ class TaskManager{
 	public String promptUserDesc(Scanner sc){
 		String desc = "";
 		while(desc == null || desc.equals("") || desc.equals(" ")){
-			System.out.println("Enter description of task");
+			System.out.println("Enter description of task\nor enter 'c' to cancel");
 			desc = sc.nextLine();
 
 			if(desc == null || desc.equals("") || desc.equals(" ")){
@@ -186,10 +186,10 @@ class TaskManager{
 		System.out.println("What do you want to edit?");
 
 		while(editCmd.equals("")){
-			System.out.println("Please enter 'description', 'deadline', or 'completion hours'");
+			System.out.println("Please enter 'description', 'deadline', 'completion hours', or 'c' to cancel");
 			editCmd = sc.nextLine();
 			
-			if(editCmd.equals("description") || editCmd.equals("deadline") || editCmd.equals("completion hours")){
+			if(editCmd.equals("description") || editCmd.equals("deadline") || editCmd.equals("completion hours") || editCmd.equals("c")){
 				return editCmd;
 			}else{
 				editCmd = "";
@@ -212,7 +212,11 @@ class TaskManager{
 		String editCmd = promptUserEditCmd(sc);
 		switch (editCmd){
 			case "description":
-				tl.editTask(id, promptUserDesc(sc));
+				String desc = promptUserDesc(sc);
+				if(desc.equals("c"))
+					return false;
+				else
+					tl.editTask(id, desc);
 				break;
 			case "deadline":
 				tl.editTask(id, promptUserDeadln(sc));
@@ -220,6 +224,8 @@ class TaskManager{
 			case "completion hours":
 				tl.editTask(id, promptUserComplHrs(sc));
 				break;
+			case "c":
+				return false;
 			default:
 				return false;
 		}
