@@ -5,8 +5,7 @@
 
 import java.util.Calendar;
 
-public class Task
-{
+public class Task{
 	private int id; //identifier for the object
 	private String desc; //description of the task
 	private Calendar deadln; //deadline
@@ -15,8 +14,7 @@ public class Task
 
 	//Constructor
 	//Creates a task with the information entered
-	public Task(int id, String desc, Calendar deadln, int complHrs)
-	{
+	public Task(int id, String desc, Calendar deadln, int complHrs){
 		this.id = id;
 		this.desc = desc;
 		this.deadln = deadln;
@@ -26,10 +24,8 @@ public class Task
 
 
 	//calculates the priority of the task based on deadline date and hours it will take to complete
-	private void calcPriority()
-	{
-		if(deadln == null)
-		{
+	private void calcPriority(){
+		if(deadln == null){
 			priority = -1;
 			return;
 		}
@@ -41,32 +37,27 @@ public class Task
 		int diffHr = deadln.get(Calendar.HOUR_OF_DAY) - currDate.get(Calendar.HOUR_OF_DAY);
 		int diffMin = deadln.get(Calendar.MINUTE) - currDate.get(Calendar.MINUTE);
 
-		if(diffMin < 0)
-		{
+		if(diffMin < 0){
 			diffMin += 60;
 			diffHr--;
 		}
 
-		if(diffHr < 0)
-		{
+		if(diffHr < 0){
 			diffHr += 24;
 			diffDay--;
 		}
 
-		if(diffDay < 0)
-		{
+		if(diffDay < 0){
 			diffDay += 31;
 			diffMnth--;
 		}
 
-		if(diffMnth < 0)
-		{
+		if(diffMnth < 0){
 			diffMnth += 12;
 			diffYr--;
 		}
 
-		if(diffYr < 0)
-		{
+		if(diffYr < 0){
 			priority = -1;
 		}
 
@@ -79,64 +70,55 @@ public class Task
 
 	//Getter
 	//returns the id value
-	public int getId()
-	{
+	public int getId(){
 		return id;
 	}
 
 	//Setter
 	//sets the description
-	public void setDesc(String newDesc)
-	{
+	public void setDesc(String newDesc){
 		desc = newDesc;
 	}
 
 	//Getter
 	//returns the description
-	public String getDesc()
-	{
+	public String getDesc(){
 		return desc;
 	}
 
 	//Setter
 	//sets deadline
-	public void setDeadln(Calendar newDeadln)
-	{
+	public void setDeadln(Calendar newDeadln){
 		deadln = newDeadln;
 	}
 
 	//Getter
 	//returns deadline
-	public Calendar getDeadln()
-	{
+	public Calendar getDeadln(){
 		return deadln;
 	}
 
 	//Setter
 	//sets hours to completion
-	public void setComplHrs(int newComplHrs)
-	{
+	public void setComplHrs(int newComplHrs){
 		complHrs = newComplHrs;
 	}
 
 	//Getter
 	//returns hours to completion
-	public int getComplHrs()
-	{
+	public int getComplHrs(){
 		return complHrs;
 	}
 
 	//Getter
 	//returns priority of the task
-	public int getPriority()
-	{
+	public int getPriority(){
 		return priority;
 	}
 
 	//returns a string of all the important information
 	@Override
-	public String toString()
-	{
+	public String toString(){
 		return 
 			"id: " + id + "\tTask Description: " + desc 
 			+ 
