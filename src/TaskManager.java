@@ -145,9 +145,18 @@ class TaskManager{
 	//Return true if successful
 	public boolean userAddTask(Scanner sc){
 		String desc = promptUserDesc(sc);
-		Calendar date = promptUserDeadln(sc);
-		int complHrs = promptUserComplHrs(sc);
+		if(desc.equals("c") || desc == null)
+			return false;
 
+
+		Calendar date = promptUserDeadln(sc);
+		if(date == null)
+			return false;
+
+		int complHrs = promptUserComplHrs(sc);
+		if(complHrs < 0)
+			return false;
+		
 		if(desc != null && date != null && complHrs >= 0){
 			tl.addTask(desc, date, complHrs);
 			return true;
