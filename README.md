@@ -8,17 +8,12 @@ I am a college student computer science major. It is sometimes difficult to mana
 
 ## Running
 
-Until an official release is made, you will have to compile from the source code.
+Package and run the source code using Maven
+You can do this with an IDE or through a terminal
 
-Compile the code using JDK and run TasdkManager.
-
-Console commands:
->javac *.java  
->java TaskManager
-
-or load the source code into an IDE like Eclipse or NetBeans and run it
-
-Then follow the program's instructions.
+Commands for linux systems:  
+`mvn package`  
+`java -cp target/gs-maven-0.1.0.jar TaskManager`
 
 ## Built With
 
