@@ -4,6 +4,8 @@
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class TaskList{
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
@@ -18,11 +20,39 @@ public class TaskList{
 		Task task = new Task(nextTaskId, "Code Task Manager", date, 5);
 		tasks.add(task);
 		nextTaskId++;
+		save("file");
 	}
 
 	//returns the size of the task list
 	public int size(){
 		return tasks.size();
+	}
+
+	//saves all information from tasks to the file specified by filename
+	public boolean save(String filename){
+		JSONObject json = new JSONObject();
+
+		for(int i = 0; i < tasks.size(); i++){
+			JSONObject task = new JSONObject();
+			JSONObject time = new JSONObject();
+
+			time.put("minutes", tasks.get(i).getDeadln().get(Calendar.MINUTE));
+			time.put("hours", tasks.get(i).getDeadln().get(Calendar.HOUR_OF_DAY));
+			time.put("day", tasks.get(i).getDeadln().get(Calendar.DATE));
+			time.put("month", tasks.get(i).getDeadln().get(Calendar.MONTH));
+			time.put("year", tasks.get(i).getDeadln().get(Calendar.YEAR));
+
+			task.put("deadln", time);
+			task.put("desc", tasks.get(i).getDesc());
+			task.put("complHrs", tasks.get(i).getComplHrs());
+
+
+			json.put("task", task);
+		}
+
+		System.out.println(json.toString());
+
+		return false;
 	}
 
 	//adds task to task list and returns whether or not it was successful
