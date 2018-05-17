@@ -4,6 +4,12 @@
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class TaskList{
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
@@ -23,6 +29,48 @@ public class TaskList{
 	//returns the size of the task list
 	public int size(){
 		return tasks.size();
+	}
+
+	//saves all information from tasks to the file specified by filename
+	public boolean save(String filename){
+		JSONObject json = new JSONObject();
+
+		for(int i = 0; i < tasks.size(); i++){
+			JSONObject task = new JSONObject();
+			JSONObject time = new JSONObject();
+
+			time.put("minutes", tasks.get(i).getDeadln().get(Calendar.MINUTE));
+			time.put("hours", tasks.get(i).getDeadln().get(Calendar.HOUR_OF_DAY));
+			time.put("day", tasks.get(i).getDeadln().get(Calendar.DATE));
+			time.put("month", tasks.get(i).getDeadln().get(Calendar.MONTH));
+			time.put("year", tasks.get(i).getDeadln().get(Calendar.YEAR));
+
+			task.put("deadln", time);
+			task.put("desc", tasks.get(i).getDesc());
+			task.put("complHrs", tasks.get(i).getComplHrs());
+
+
+			json.put("task", task);
+		}
+
+		System.out.println(json.toString());
+
+		try{
+			File f = new File(filename);
+			FileWriter fw = new FileWriter(f);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(json.toString());
+			bw.close();
+			System.out.println("File saved successfully");
+		} catch (IOException ioe){
+			System.err.println("There was an error saving the file");
+	   		return false;
+		} catch(Exception ex){
+	       	System.err.println("There may have been an error saving the file");
+	       	return false;
+		}
+
+		return false;
 	}
 
 	//adds task to task list and returns whether or not it was successful
