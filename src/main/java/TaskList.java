@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class TaskList{
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
@@ -20,7 +24,6 @@ public class TaskList{
 		Task task = new Task(nextTaskId, "Code Task Manager", date, 5);
 		tasks.add(task);
 		nextTaskId++;
-		save("file");
 	}
 
 	//returns the size of the task list
@@ -51,6 +54,21 @@ public class TaskList{
 		}
 
 		System.out.println(json.toString());
+
+		try{
+			File f = new File(filename);
+			FileWriter fw = new FileWriter(f);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(json.toString());
+			bw.close();
+			System.out.println("File saved successfully");
+		} catch (IOException ioe){
+			System.err.println("There was an error saving the file");
+	   		return false;
+		} catch(Exception ex){
+	       	System.err.println("There may have been an error saving the file");
+	       	return false;
+		}
 
 		return false;
 	}
