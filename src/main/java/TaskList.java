@@ -14,16 +14,12 @@ import java.io.IOException;
 public class TaskList{
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
 	private int nextTaskId = 0; //holds the id value of the next Task that will be constructed
+	private String saveFile = "file.json";
 
 	//Constructor
 	//Creates an empty TaskList
 	public TaskList(){
 		tasks = new ArrayList<Task>();
-		Calendar date = Calendar.getInstance();
-		date.set(0, 0, 0, 0, 0);
-		Task task = new Task(nextTaskId, "Code Task Manager", date, 5);
-		tasks.add(task);
-		nextTaskId++;
 	}
 
 	//returns the size of the task list
@@ -31,8 +27,8 @@ public class TaskList{
 		return tasks.size();
 	}
 
-	//saves all information from tasks to the file specified by filename
-	public boolean save(String filename){
+	//saves all information from tasks to the specified by saveFile
+	public boolean save(){
 		JSONObject json = new JSONObject();
 
 		for(int i = 0; i < tasks.size(); i++){
@@ -49,19 +45,15 @@ public class TaskList{
 			task.put("desc", tasks.get(i).getDesc());
 			task.put("complHrs", tasks.get(i).getComplHrs());
 
-
-			json.put("task", task);
+			json.put(tasks.get(i).getId(), task);
 		}
 
-		System.out.println(json.toString());
-
 		try{
-			File f = new File(filename);
+			File f = new File(saveFile);
 			FileWriter fw = new FileWriter(f);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(json.toString());
 			bw.close();
-			System.out.println("File saved successfully");
 		} catch (IOException ioe){
 			System.err.println("There was an error saving the file");
 	   		return false;
@@ -82,6 +74,7 @@ public class TaskList{
 
 		tasks.add(newTask);
 		nextTaskId++;
+		save();
 		return true;
 	}
 
@@ -114,6 +107,7 @@ public class TaskList{
 		}
 
 		idTask.setDeadln(deadln);
+		save();
 		return true;
 	}
 
@@ -125,6 +119,7 @@ public class TaskList{
 		}
 
 		idTask.setDesc(desc);
+		save();
 		return true;
 	}
 
@@ -136,6 +131,7 @@ public class TaskList{
 		}
 
 		idTask.setComplHrs(complHrs);
+		save();
 		return true;
 	}
 
@@ -143,6 +139,7 @@ public class TaskList{
 		for(int i = 0; i < tasks.size(); i++){
 			if(tasks.get(i).getId() == id){
 				tasks.remove(i);
+				save();
 				return true;
 			}
 		}
