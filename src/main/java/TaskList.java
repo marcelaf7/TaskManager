@@ -11,6 +11,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import org.json.simple.parser.JSONParser;
+import java.util.Iterator;
+import java.io.FileNotFoundException;
+import org.json.simple.parser.ParseException;
+
 
 public class TaskList{
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
@@ -21,6 +26,7 @@ public class TaskList{
 	//Creates an empty TaskList
 	public TaskList(){
 		tasks = new ArrayList<Task>();
+		load();
 	}
 
 	//returns the size of the task list
@@ -67,10 +73,37 @@ public class TaskList{
 	}
 
 	public boolean load() {
+		JSONParser parser = new JSONParser();
+		
+		try {
+			JSONArray array = (JSONArray) parser.parse(new FileReader(saveFile));
 
+			for(Object o : array) {
+				JSONObject task = (JSONObject) o;
 
+				String desc = (String) task.get("desc");
+				int complHrs = (int) (long) task.get("complHrs");
+				JSONObject deadlnJSON = (JSONObject) task.get("deadln");
+				int hours = (int) (long) deadlnJSON.get("hours");
+				int minutes = (int) (long) deadlnJSON.get("minutes");
+				int day = (int) (long) deadlnJSON.get("day");
+				int month = (int) (long) deadlnJSON.get("month");
+				int year = (int) (long) deadlnJSON.get("year");
 
-		return false;
+				Calendar deadln = Calendar.getInstance();
+				deadln.set(year, month, day, hours, minutes);
+				tasks.add(new Task(nextTaskId, desc, deadln, complHrs));
+				nextTaskId++;
+			}
+		} catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+		return true;
 	}
 
 	//adds task to task list and returns whether or not it was successful
