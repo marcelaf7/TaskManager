@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class TaskList{
@@ -61,6 +62,13 @@ public class TaskList{
 	       	System.err.println("There may have been an error saving the file");
 	       	return false;
 		}
+
+		return false;
+	}
+
+	public boolean load() {
+
+
 
 		return false;
 	}
