@@ -30,7 +30,7 @@ public class TaskList{
 
 	//saves all information from tasks to the specified by saveFile
 	public boolean save(){
-		JSONObject json = new JSONObject();
+		JSONArray json = new JSONArray();
 
 		for(int i = 0; i < tasks.size(); i++){
 			JSONObject task = new JSONObject();
@@ -46,7 +46,7 @@ public class TaskList{
 			task.put("desc", tasks.get(i).getDesc());
 			task.put("complHrs", tasks.get(i).getComplHrs());
 
-			json.put(tasks.get(i).getId(), task);
+			json.add(task);
 		}
 
 		try{
