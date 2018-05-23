@@ -21,7 +21,8 @@ Commands for linux systems:
 
 ## Contributing
 
-Feel free to fork and make pull requests for anything. Contributing instructions will be posted soon.
+To contribute code:
+Find an issue to work on,fork the repository, make changes, open a pull request documenting the changes.
 
 ## Authors
 
