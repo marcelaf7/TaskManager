@@ -48,16 +48,20 @@ class TaskManager{
 			return null;
 		}
 
-		int[] ints = new int[3];
+		int month, day, year;
 		try{
-			ints[0] = Integer.parseInt(strs[0]);
-			ints[1] = Integer.parseInt(strs[1]);
-			ints[2] = Integer.parseInt(strs[2]);
+			month = Integer.parseInt(strs[0]) - 1;
+			day = Integer.parseInt(strs[1]);
+			year = Integer.parseInt(strs[2]);
 		}catch(NumberFormatException e){
 			return null;
 		}
 
-		date.set(ints[2], ints[0], ints[1]);
+		if(year < 100)
+		{
+			year += 2000;
+		}
+		date.set(year, month, day);
 		return date;
 	}
 
