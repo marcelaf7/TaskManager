@@ -1,6 +1,6 @@
 # Task-manager
 
-A program that keeps track of all the tasks you have to do and decides for you which task is highest priority.
+A program to keep track of deadlines and help decide which to work on first
 
 ## Background Info
 
