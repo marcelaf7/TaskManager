@@ -4,13 +4,38 @@
 
 import java.util.Scanner;
 import java.util.Calendar;
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 class TaskManager{
-	private TaskList tl = new TaskList();
+	private TaskList tl;
 
-	//constructor
-	public TaskList getTl(){
+
+	public TaskManager() {
+		tl = new TaskList(getSaveFile());
+	}
+
+	public TaskList getTl() {
 		return tl;
+	}
+
+	public String getSaveFile() {
+		try {
+			File file = new File("file.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+
+			String line = br.readLine();
+			if(line != null) {
+				System.out.println("Save file location is " + line);
+				return line;
+			}
+		}
+		catch (Exception e) {
+			System.err.println("There was an error finding the save file");
+		}
+
+		return "";
 	}
 
 	//Array holding all the commands the user can enter

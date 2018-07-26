@@ -20,11 +20,17 @@ import org.json.simple.parser.ParseException;
 public class TaskList{
 	private ArrayList<Task> tasks; //holds all the Tasks in the TaskList
 	private int nextTaskId = 0; //holds the id value of the next Task that will be constructed
-	private String saveFile = "file.json";
+	private String saveFile = "save.json";
 
 	//Constructor
 	//Creates an empty TaskList
-	public TaskList(){
+	public TaskList(String saveFile){
+		if(saveFile == null || saveFile.equals("")) {
+			this.saveFile = "save.json";
+		}
+		else {
+			this.saveFile = saveFile;
+		}
 		tasks = new ArrayList<Task>();
 		load();
 	}
@@ -32,6 +38,22 @@ public class TaskList{
 	//returns the size of the task list
 	public int size(){
 		return tasks.size();
+	}
+
+	public void createSave() {
+		try {
+			File f = new File("file.txt");
+			FileWriter fw = new FileWriter(f);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(saveFile);
+			bw.close();
+		} catch (IOException ioe){
+			System.err.println("There was an error creating the saveFile");
+	   		return;
+		} catch(Exception ex){
+	       	System.err.println("There may have been an error creating the saveFile");
+	       	return;
+		}
 	}
 
 	//saves all information from tasks to the specified by saveFile
@@ -96,7 +118,8 @@ public class TaskList{
 				nextTaskId++;
 			}
 		} catch (FileNotFoundException e) {
-            e.printStackTrace();
+			createSave();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
